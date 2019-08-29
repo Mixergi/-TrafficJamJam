@@ -23,6 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '9ti3cs)6tm3r&h30cq4qg5s-fhm7bap!%a)%2i=1fhf^11%n0)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# 제대로 실행시엔 이거 꺼놓기
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -103,9 +104,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
