@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'myapp',
 ]
 
 MIDDLEWARE = [
@@ -119,3 +120,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+import firebase_admin
+from firebase_admin import credentials
+
+cred = credentials.Certificate(os.path.join(BASE_DIR, 'trafficjamjam-3e477-firebase-adminsdk-xbjf1-f31b4ac031.json'))
+default_app = firebase_admin.initialize_app(cred)
