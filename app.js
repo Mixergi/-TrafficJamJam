@@ -25,33 +25,19 @@ admin.initializeApp({
 var db = admin.database();
 var ref = db.ref("AllData/GwangJu");
 
-// ref.once("value", function(snapshot) {
-//     console.log(snapshot.val());
-// });
-
-ref.on("value", function(snapshot) {
+// 라우팅 처리
+app.get('/', (req, res) => {
+    // 데이터 검색
+    ref.once("value", function(snapshot) {
         console.log(snapshot.val());
+        res.render('./test', {title: 'test', data: snapshot.val()});
     }, function (errorObject) {
         console.log("The read failed: " + errorObject.code);
-    }
-);
-
-
-
-app.get('/', (req, res) => {
-    res.render('./test', {title: 'test'});
+        res.send('error');
+    });
 });
 
-// io.on('connection', (socket) => {
-//     console.log('a user connected');
-//     socket.on('chat message', (msg) => {
-//         console.log(msg);
-//         io.emit('chat message', msg);
-//     });
-//     socket.on('disconnect', () => {
-//     console.log('user disconnected');
-//     });
-// });
+// 소켓 통신
 
 app.listen(8080, () => {
     console.log('8080 서버에서 대기중')
