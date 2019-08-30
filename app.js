@@ -7,6 +7,7 @@
 
 const app = require('express')();
 const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 const logger = require('morgan');
 
 // WEB 세팅
@@ -38,6 +39,25 @@ app.get('/', (req, res) => {
 });
 
 // 소켓 통신
+var TJJ = require('./TTJ/gps');
+var coordinate = [[0, 0], [0, 0]]; // [0]은 이전 좌표, [1]은 현재 좌표
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.on('now coordinate', (msg) => {
+        console.log('(', msg[0], ', ', msg[1], ')');
+        coordinate[0] = coordinate[1];
+        coordinate[1] = msg;
+        console.log(coordinate);
+
+        speed = TJJ.calculate_speed(coordinate[0], coordinate[1]);
+        console.log(speed, 'km/h');
+
+        io.emit('warning', 'test');
+    });
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+});
 
 app.listen(8080, () => {
     console.log('8080 서버에서 대기중');
