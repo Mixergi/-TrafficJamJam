@@ -51,6 +51,20 @@ function check_format(position){
 
 module.exports = {
     calculate_distance : function (position1, position2) {
+        ```
+        Calculate distance bewteen two position
+
+
+        @params
+
+        position1 : list of Coordinates [latitude, longtitude]
+        position2 : list of Coordinates [latitude, longtitude]
+
+
+        @return
+
+        Returns the distance between two points in meters (floats)
+        ```
 
         var format = check_format(position1[0]);
     
@@ -63,10 +77,46 @@ module.exports = {
     
     },
     calculate_speed : function (position1, position2, milisecond = 1000) {
+        ```
+        Calculate speed when object move from position1 to position2
+
+        @params
+
+        position 1: list of Coordinates [latitude, longtitude]
+
+        position 2: list of Coordinates [latitude, longtitude]
+
+        milisecomd : the time that the object moved from position 1 to position 2 as milisecond
+
+
+        @return
+
+        return km/h (float)
+
+        ```
     
         return (calculate_distance(position1, position2) * 3600 / (milisecond / 1000)) / 1000;
     },
-    calculate_vector : function (position1, position2, format = 'degree') {    
+    calculate_vector : function (position1, position2, format = 'degree') {   
+        ```
+        calculate vector in which an object has moved
+
+        
+        @params
+
+        position 1 : list of Coordinates [latitude, longtitude]
+
+        position 2 : list of Coordinates [latitude, longtitude]
+
+        format : default = degree, Set the data type of position
+
+        
+
+        @return
+
+        return : the vector of distance that the object moved
+
+        ```
 
         var format = check_format(position1[0]);
     
