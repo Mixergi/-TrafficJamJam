@@ -23,10 +23,12 @@ admin.initializeApp({
     databaseURL : "https://trafficjamjam-3e477.firebaseio.com"
 });
 var db = admin.database();
-var ref = db.ref("restricted_access/secret_document");
-ref.once("value", function(snapshot) {
-    console.log(snapshot.val());
-});
+var ref = db.ref("AllData/GwangJu");
+
+// ref.once("value", function(snapshot) {
+//     console.log(snapshot.val());
+// });
+
 ref.on("value", function(snapshot) {
         console.log(snapshot.val());
     }, function (errorObject) {
