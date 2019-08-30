@@ -1,7 +1,3 @@
-
-
-
-
 function set_figure(format) {
 
     var latitude = 0;
