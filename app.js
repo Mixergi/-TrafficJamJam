@@ -5,11 +5,18 @@
 
 // setInterval(roop, 1000)\
 
-const admin = require('firebase-admin');
-const serviceAccount = require('./trafficjamjam-3e477-firebase-adminsdk-xbjf1-6c03c55dec.json');
 const app = require('express')();
 const http = require('http').createServer(app);
-// const io = require('socket.io')(http);
+const logger = require('morgan');
+
+// WEB 세팅
+app.use(logger('dev')); // 로깅처리
+app.set('view engine', 'ejs');  //템플릿 엔진 세팅
+app.set('views', './views');    //ejs 파일이 저장된 디렉토리
+
+// DB 세팅
+const admin = require('firebase-admin');
+const serviceAccount = require('./trafficjamjam-3e477-firebase-adminsdk-xbjf1-6c03c55dec.json');
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -20,9 +27,17 @@ var ref = db.ref("restricted_access/secret_document");
 ref.once("value", function(snapshot) {
     console.log(snapshot.val());
 });
+ref.on("value", function(snapshot) {
+        console.log(snapshot.val());
+    }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+    }
+);
+
+
 
 app.get('/', (req, res) => {
-    res.sendfile('./test.html');
+    res.render('./test', {title: 'test'});
 });
 
 // io.on('connection', (socket) => {
