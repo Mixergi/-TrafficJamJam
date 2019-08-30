@@ -40,5 +40,5 @@ app.get('/', (req, res) => {
 // 소켓 통신
 
 app.listen(8080, () => {
-    console.log('8080 서버에서 대기중')
+    console.log('8080 서버에서 대기중');
 });

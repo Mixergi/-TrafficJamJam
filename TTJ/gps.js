@@ -49,8 +49,39 @@ function check_format(position){
     }
 };
 
+function calculate_vector(position1, position2, format = 'degree') { // 기울기 계산
+    ```
+    calculate vector in which an object has moved
+
+    
+    @params
+
+    position 1 : list of Coordinates [latitude, longtitude]
+
+    position 2 : list of Coordinates [latitude, longtitude]
+
+    format : default = degree, Set the data type of position
+
+    
+
+    @return
+
+    return : the vector of distance that the object moved
+
+    ```
+
+    var format = check_format(position1[0]);
+
+    var latitude = set_figure(format);
+
+    var longitude = 90000
+
+    return ((convert_to_degree(position1[0]) - convert_to_degree(position2[0])) * latitude) / ((convert_to_degree(position1[1]) - convert_to_degree(position2[1])) * longitude)
+
+}
+
 module.exports = {
-    calculate_distance : function (position1, position2) {
+    calculate_distance : function (position1, position2) { // 두 점 사이 거리(m)
         ```
         Calculate distance bewteen two position
 
@@ -76,7 +107,7 @@ module.exports = {
             + (((convert_to_degree(position1[1]) - convert_to_degree(position2[1])) * longitude) ** 2)) ** 0.5;
     
     },
-    calculate_speed : function (position1, position2, milisecond = 1000) {
+    calculate_speed : function (position1, position2, milisecond = 1000) { // 속도 계산(km/h)
         ```
         Calculate speed when object move from position1 to position2
 
@@ -96,35 +127,5 @@ module.exports = {
         ```
     
         return (calculate_distance(position1, position2) * 3600 / (milisecond / 1000)) / 1000;
-    },
-    calculate_vector : function (position1, position2, format = 'degree') {   
-        ```
-        calculate vector in which an object has moved
-
-        
-        @params
-
-        position 1 : list of Coordinates [latitude, longtitude]
-
-        position 2 : list of Coordinates [latitude, longtitude]
-
-        format : default = degree, Set the data type of position
-
-        
-
-        @return
-
-        return : the vector of distance that the object moved
-
-        ```
-
-        var format = check_format(position1[0]);
-    
-        var latitude = set_figure(format);
-    
-        var longitude = 90000
-    
-        return ((convert_to_degree(position1[0]) - convert_to_degree(position2[0])) * latitude) / ((convert_to_degree(position1[1]) - convert_to_degree(position2[1])) * longitude)
-    
     }
 };
