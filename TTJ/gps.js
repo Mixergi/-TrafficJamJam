@@ -1,32 +1,6 @@
-function calculate_distance(position1, position2) {
 
-    var format = check_format(position1[0]);
 
-    var latitude = set_figure(format);
 
-    var longitude = 90000
-
-    return ((((convert_to_degree(position1[0]) - convert_to_degree(position2[0])) * latitude) ** 2)
-        + (((convert_to_degree(position1[1]) - convert_to_degree(position2[1])) * longitude) ** 2)) ** 0.5;
-
-};
-
-function calculate_speed(position1, position2, milisecond = 1000) {
-
-    return (calculate_distance(position1, position2) * 3600 / (milisecond / 1000)) / 1000;
-};
-
-function calculate_vector(position1, position2, format = 'degree') {
-
-    var format = check_format(position1[0]);
-
-    var latitude = set_figure(format);
-
-    var longitude = 90000
-
-    return ((convert_to_degree(position1[0]) - convert_to_degree(position2[0])) * latitude) / ((convert_to_degree(position1[1]) - convert_to_degree(position2[1])) * longitude)
-
-};
 
 function set_figure(format) {
 
@@ -79,4 +53,32 @@ function check_format(position){
     }
 };
 
-console.log(calculate_vector([`35°08'39.0"`, `126°48'42.2"`], [`35°08'36.8"`, `126°47'57.7"`]));
+module.exports = {
+    calculate_distance : function (position1, position2) {
+
+        var format = check_format(position1[0]);
+    
+        var latitude = set_figure(format);
+    
+        var longitude = 90000
+    
+        return ((((convert_to_degree(position1[0]) - convert_to_degree(position2[0])) * latitude) ** 2)
+            + (((convert_to_degree(position1[1]) - convert_to_degree(position2[1])) * longitude) ** 2)) ** 0.5;
+    
+    },
+    calculate_speed : function (position1, position2, milisecond = 1000) {
+    
+        return (calculate_distance(position1, position2) * 3600 / (milisecond / 1000)) / 1000;
+    },
+    calculate_vector : function (position1, position2, format = 'degree') {    
+
+        var format = check_format(position1[0]);
+    
+        var latitude = set_figure(format);
+    
+        var longitude = 90000
+    
+        return ((convert_to_degree(position1[0]) - convert_to_degree(position2[0])) * latitude) / ((convert_to_degree(position1[1]) - convert_to_degree(position2[1])) * longitude)
+    
+    }
+};
