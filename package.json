@@ -1,0 +1,24 @@
+{
+  "name": "-trafficjamjam",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mixergi/-TrafficJamJam.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mixergi/-TrafficJamJam/issues"
+  },
+  "homepage": "https://github.com/Mixergi/-TrafficJamJam#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "firebase-admin": "^8.4.0",
+    "socket.io": "^2.2.0"
+  }
+}
