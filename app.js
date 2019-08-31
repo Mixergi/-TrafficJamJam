@@ -37,6 +37,18 @@ app.get('/', (req, res) => {
     res.render('./test', { title: 'test' });
 });
 
+app.get('/index', (req, res) => {
+    res.render('./index');
+});
+
+app.get('/main', (req, res) => {
+    res.render('./main');
+});
+
+app.get('/hud', (req, res) => {
+    res.render('./hud');
+});
+
 // 소켓 통신
 var gps = require('./package/gps');
 var user = require('./package/user');
