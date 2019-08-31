@@ -29,16 +29,17 @@ admin.initializeApp({
 var db = admin.database();
 var ref = db.ref("AllData/GwangJu");
 
+// 데이터 검색
+ref.once("value", function(snapshot) {
+    console.log(snapshot.val());
+}, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+    res.send('error');
+});
+
 // 라우팅 처리
 app.get('/', (req, res) => {
-    // 데이터 검색
-    ref.once("value", function(snapshot) {
-        console.log(snapshot.val());
-        res.render('./test', {title: 'test', data: snapshot.val()});
-    }, function (errorObject) {
-        console.log("The read failed: " + errorObject.code);
-        res.send('error');
-    });
+    res.render('./test', {title: 'test'});
 });
 
 // 소켓 통신

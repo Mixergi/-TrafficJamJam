@@ -4,8 +4,6 @@
         <meta charset="utf-8">
         <title><%- title %></title>
         <link rel="stylesheet" href="/css/test.css">
-        <!-- <script src="/js/socket.io.js"></script> -->
-        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script> -->
         <script src="/js/socket.io.js"></script>
     </head>
     <body>
@@ -31,6 +29,7 @@
             }
             
             if(navigator.geolocation){ // GPS 지원시
+                $('#messages').append($('<li>').text('GPS on'));
                 $(() => {
                     var socket = io();
                     var coordinate;
@@ -44,7 +43,7 @@
                     socket.on('warning', (msg) => {
                         $('#messages').append($('<li>').text(msg));
                     });
-            });
+                });
             } else {
                 alert('GPS를 켜주세요');
             }
