@@ -95,6 +95,8 @@ io.on('connection', (socket) => {
             static_data[i].location.longitude >= y[0] && static_data[i].location.latitude <= y[1]){ // 방향이 같고, 보고 있는 방향에 위치함
                 console.log(static_data[i]);
                 user_list[room_num].set_traffic_light(static_data[i]);
+            } else if(user_list[room_num].near_traffic_light) {
+                
             }
         }
 
