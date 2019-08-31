@@ -18,13 +18,13 @@ const serviceAccount = require('./trafficjamjam-3e477-firebase-adminsdk-xbjf1-6c
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL : "https://trafficjamjam-3e477.firebaseio.com"
+    databaseURL: "https://trafficjamjam-3e477.firebaseio.com"
 });
 var db = admin.database();
 var ref = db.ref("AllData/GwangJu");
 
 // 데이터 검색
-ref.once("value", function(snapshot) {
+ref.once("value", function (snapshot) {
     console.log(snapshot.val());
 }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
@@ -33,30 +33,43 @@ ref.once("value", function(snapshot) {
 
 // 라우팅 처리
 app.get('/', (req, res) => {
-    res.render('./test', {title: 'test'});
+    res.render('./test', { title: 'test' });
 });
 
 // 소켓 통신
 var gps = require('./package/gps');
+var user = require('./package/user');
+
+var room_num = 0;
+var room_list = [];
+var user_list = [];
 
 io.on('connection', (socket) => {
-    var coordinate = [['0.00000°', '0.00000°'], ['0.00000°', '0.00000°']]; // [0]은 이전 좌표, [1]은 현재 좌표
-    console.log('user connected');
-    socket.on('now coordinate', (data) => {
-        console.log('(', data[0], ', ', data[1], ')');
-        coordinate[0] = coordinate[1];
-        coordinate[1] = [String(data[0])+'°', String(data[1])+'°']
-        console.log(coordinate);
 
-        var distance = gps.calculate_distance(coordinate[0], coordinate[1]);
+    room_list.push = [`${room_num}`];
+    user_list.push(new user(room_num));
+    socket.emit('give_room_num', room_num);
+    socket.join(room_list[room_num++]);
+
+
+    console.log('user connected');
+    socket.on('now coordinate', (room_num, data) => {
+
+        console.log('room_num : ', room_num);
+
+        user_list[room_num].update_position( [String(data[0]) + '°', String(data[1]) + '°']);
+        console.log(user_list[room_num].coordinate[0], ' ', user_list[room_num].coordinate[1]);
+
+        var distance = gps.calculate_distance(user_list[room_num].coordinate[0], user_list[room_num].coordinate[1]);
         console.log(distance);
-        var speed = parseInt(gps.calculate_speed(coordinate[0], coordinate[1]));
+        var speed = parseInt(gps.calculate_speed(user_list[room_num].coordinate[0], user_list[room_num].coordinate[1]));
         console.log(speed);
-        var direction = gps.calculate_direction(coordinate[0], coordinate[1])
+        var direction = gps.calculate_direction(user_list[room_num].coordinate[0], user_list[room_num].coordinate[1])
         console.log(direction);
 
-        var lat = gps.m_to_lat(distance)*10, lon = gps.m_to_lon(distance)*10; // 반경 구하기
-        var now_lat = parseFloat(coordinate[1][0].substring(0, coordinate[1][0].length)), now_lon = parseFloat(coordinate[1][1].substring(0, coordinate[1][1].length)); // 현재 위경도
+        var lat = gps.m_to_lat(distance) * 10, lon = gps.m_to_lon(distance) * 10; // 반경 구하기
+        var now_lat = parseFloat(user_list[room_num].coordinate[1][0].substring(0, user_list[room_num].coordinate[1][0].length)),
+         now_lon = parseFloat(user_list[room_num].coordinate[1][1].substring(0, user_list[room_num].coordinate[1][1].length)); // 현재 위경도
         console.log(lat, lon);
         console.log(now_lat, now_lon);
 

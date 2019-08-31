@@ -13,6 +13,8 @@
         </form>
         <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
         <script>
+            var room_num;
+
             getLocation = function(callback){
                 navigator.geolocation.getCurrentPosition(function(position){
                         x = position.coords.latitude, y = position.coords.longitude;
@@ -31,15 +33,21 @@
                 $(() => {
                     var socket = io();
                     var coordinate;
+
                     setInterval(() => {
                         getLocation(function(x,y){
                             coordinate = [x,y];
                         });
-                        socket.emit('now coordinate', [coordinate[0], coordinate[1]]); // 위도, 경도
+                        socket.emit('now coordinate', room_num, [coordinate[0], coordinate[1]]); // 위도, 경도
                     }, 1000);
+
                     socket.on('warning', (msg) => {
                         $('#messages').append($('<li>').text(msg));
                     });
+
+                    socket.on('give_room_num', (room_num) =>{
+                        this.room_num = room_num;
+                    }); 
                 });
             } else {
                 alert('GPS를 켜주세요');
