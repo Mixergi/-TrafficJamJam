@@ -44,8 +44,9 @@ app.get('/', (req, res) => {
 
 // 소켓 통신
 var TJJ = require('./TJJ/gps');
-var coordinate = [['0.00000°', '0.00000°'], ['0.00000°', '0.00000°']]; // [0]은 이전 좌표, [1]은 현재 좌표
+
 io.on('connection', (socket) => {
+    var coordinate = [['0.00000°', '0.00000°'], ['0.00000°', '0.00000°']]; // [0]은 이전 좌표, [1]은 현재 좌표
     console.log('user connected');
     socket.on('now coordinate', (data) => {
         console.log('(', data[0], ', ', data[1], ')');
