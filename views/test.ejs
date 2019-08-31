@@ -16,8 +16,6 @@
             getLocation = function(callback){
                 navigator.geolocation.getCurrentPosition(function(position){
                         x = position.coords.latitude, y = position.coords.longitude;
-                        // $('#messages').append($('<li>').text(x));
-                        // $('#messages').append($('<li>').text(y));
                         callback(x, y);
                     }, function(error){
                         console.error(error);
@@ -27,8 +25,8 @@
                         timeout: Infinity
                     });
             }
-            
-            if(navigator.geolocation){ // GPS 지원시
+             
+            if("geolocation" in navigator){ // GPS 지원시
                 $('#messages').append($('<li>').text('GPS on'));
                 $(() => {
                     var socket = io();
@@ -37,7 +35,6 @@
                         getLocation(function(x,y){
                             coordinate = [x,y];
                         });
-                        $('#messages').append($('<li>').text(coordinate[0]));
                         socket.emit('now coordinate', [coordinate[0], coordinate[1]]); // 위도, 경도
                     }, 1000);
                     socket.on('warning', (msg) => {
