@@ -59,7 +59,6 @@ io.on('connection', (socket) => {
             user_list[room_num] = undefined;
             room_list[room_num] = undefined;
             
-            console.log('삭제!')
             clearInterval(check_list[room_num]);
 
         }
