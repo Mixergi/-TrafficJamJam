@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
 });
 
 // 소켓 통신
-var TJJ = require('./TJJ/gps');
+var gps = require('./package/gps');
 
 io.on('connection', (socket) => {
     var coordinate = [['0.00000°', '0.00000°'], ['0.00000°', '0.00000°']]; // [0]은 이전 좌표, [1]은 현재 좌표
@@ -54,11 +54,11 @@ io.on('connection', (socket) => {
         coordinate[1] = [String(data[0])+'°', String(data[1])+'°']
         console.log(coordinate);
 
-        var distance = TJJ.calculate_distance(coordinate[0], coordinate[1]);
+        var distance = gps.calculate_distance(coordinate[0], coordinate[1]);
         console.log(distance);
-        var speed = parseInt(TJJ.calculate_speed(coordinate[0], coordinate[1]));
+        var speed = parseInt(gps.calculate_speed(coordinate[0], coordinate[1]));
         console.log(speed);
-        var direction = TJJ.calculate_direction(coordinate[0], coordinate[1])
+        var direction = gps.calculate_direction(coordinate[0], coordinate[1])
         console.log(direction);
 
         io.emit('warning', [String(distance), String(speed), String(direction)].join(', '));
