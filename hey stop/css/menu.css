@@ -1,0 +1,6 @@
+#green{background-color: #7cfe9c}
+.rectangle1{position: relative; background-color: #ffffff; border-radius: 100px; margin-top: 40%; height: 95px;}
+.rectangle2{position: relative; top: -57px; background-color: #ffffff;height: 500px;}
+.exp {text-align: center; font-size: 1.5em; color: white;margin-top: 20%;}
+.sel1{position: relative; text-align: center; top: 60px; font-size: 2em;  color: #7cfe9c;}
+.sel2{position: relative; text-align: center; top: 50px; font-size: 2em; margin-top:30%;color: #7cfe9c;}
