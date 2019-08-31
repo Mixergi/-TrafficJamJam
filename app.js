@@ -24,8 +24,9 @@ var db = admin.database();
 var ref = db.ref("AllData/GwangJu");
 
 // 데이터 검색
+var static_data;
 ref.once("value", function (snapshot) {
-    console.log(snapshot.val());
+    static_data = snapshot.val();
 }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
     res.send('error');
@@ -68,31 +69,33 @@ io.on('connection', (socket) => {
 
     console.log('user connected');
     socket.on('now coordinate', (room_num, data) => {
-
         console.log('room_num : ', room_num);
 
         user_list[room_num].update_position([String(data[0]) + '°', String(data[1]) + '°']);
         console.log(user_list[room_num].coordinate[0], ' ', user_list[room_num].coordinate[1]);
 
         var distance = gps.calculate_distance(user_list[room_num].coordinate[0], user_list[room_num].coordinate[1]);
-        console.log(distance);
         var speed = parseInt(gps.calculate_speed(user_list[room_num].coordinate[0], user_list[room_num].coordinate[1]));
-        console.log(speed);
         var direction = gps.calculate_direction(user_list[room_num].coordinate[0], user_list[room_num].coordinate[1])
         console.log(direction);
+        console.log(distance);
+        console.log(speed);
 
         var lat = gps.m_to_lat(distance) * 10, lon = gps.m_to_lon(distance) * 10; // 반경 구하기
         var now_lat = parseFloat(user_list[room_num].coordinate[1][0].substring(0, user_list[room_num].coordinate[1][0].length)),
             now_lon = parseFloat(user_list[room_num].coordinate[1][1].substring(0, user_list[room_num].coordinate[1][1].length)); // 현재 위경도
-        console.log(lat, lon);
-        console.log(now_lat, now_lon);
 
         var temp = gps.search(direction, lat, lon, now_lat, now_lon);
-
         var x = temp[0], y = temp[1];
 
-        console.log(x);
-        console.log(y);
+        for(var i in static_data){
+            if(static_data[i].distance == distance &&
+            static_data[i].location.latitude >= x[0] && static_data[i].location.latitude >= x[1] &&
+            static_data[i].location.longitude >= y[0] && static_data[i].location.latitude <= y[1]){ // 방향이 같고, 보고 있는 방향에 위치함
+                
+                
+            }
+        }
 
         io.emit('status', {
             speed: speed,
