@@ -4,16 +4,17 @@
 // }
 
 // setInterval(roop, 1000)\
-
-const app = require('express')();
+const express = require('express');
+const app = express();
 const http = require('http').createServer(app);
-const io = require('socket.io')(http);
 const logger = require('morgan');
+const io = require('socket.io')(http);
 
 // WEB 세팅
 app.use(logger('dev')); // 로깅처리
 app.set('view engine', 'ejs');  //템플릿 엔진 세팅
 app.set('views', './views');    //ejs 파일이 저장된 디렉토리
+app.use(express.static(__dirname + '/public'));
 
 // DB 세팅
 const admin = require('firebase-admin');
@@ -42,15 +43,15 @@ app.get('/', (req, res) => {
 var TJJ = require('./TTJ/gps');
 var coordinate = [[0, 0], [0, 0]]; // [0]은 이전 좌표, [1]은 현재 좌표
 io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.on('now coordinate', (msg) => {
-        console.log('(', msg[0], ', ', msg[1], ')');
+    console.log('user connected');
+    socket.on('now coordinate', (data) => {
+        console.log('(', data[0], ', ', data[1], ')');
         coordinate[0] = coordinate[1];
-        coordinate[1] = msg;
+        coordinate[1] = data;
         console.log(coordinate);
 
-        speed = TJJ.calculate_speed(coordinate[0], coordinate[1]);
-        console.log(speed, 'km/h');
+        // speed = TJJ.calculate_speed(coordinate[0], coordinate[1]);
+        // console.log(speed, 'km/h');
 
         io.emit('warning', 'test');
     });
@@ -59,6 +60,6 @@ io.on('connection', (socket) => {
     });
 });
 
-app.listen(8080, () => {
+http.listen(8080, () => {
     console.log('8080 서버에서 대기중');
 });
