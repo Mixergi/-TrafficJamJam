@@ -43,23 +43,23 @@ app.get('/', (req, res) => {
 
 // 소켓 통신
 var TJJ = require('./TJJ/gps');
-var coordinate = [[0, 0], [0, 0]]; // [0]은 이전 좌표, [1]은 현재 좌표
+var coordinate = [['0.00000°', '0.00000°'], ['0.00000°', '0.00000°']]; // [0]은 이전 좌표, [1]은 현재 좌표
 io.on('connection', (socket) => {
     console.log('user connected');
     socket.on('now coordinate', (data) => {
         console.log('(', data[0], ', ', data[1], ')');
         coordinate[0] = coordinate[1];
-        coordinate[1] = data;
+        coordinate[1] = [String(data[0])+'°', String(data[1])+'°']
         console.log(coordinate);
 
         var distance = TJJ.calculate_distance(coordinate[0], coordinate[1]);
-        console.log(speed, 'm move');
-        var speed = TJJ.calculate_speed(coordinate[0], coordinate[1]);
-        console.log(speed, 'km/h');
-        var direction = TJJ.calculate_direction(coordinate[0], coordinate[1]);
-        console.log('direction: ', direction);
+        console.log(distance);
+        var speed = parseInt(TJJ.calculate_speed(coordinate[0], coordinate[1]));
+        console.log(speed);
+        var direction = TJJ.calculate_direction(coordinate[0], coordinate[1])
+        console.log(direction);
 
-        io.emit('warning', 'test');
+        io.emit('warning', [String(distance), String(speed), String(direction)].join(', '));
     });
     socket.on('disconnect', () => {
         console.log('user disconnected');

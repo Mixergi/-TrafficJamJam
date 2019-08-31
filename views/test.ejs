@@ -16,17 +16,40 @@
         </form>
         <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
         <script>
-            $(() => {
-                var socket = io('localhost:8080');
-                var x = 1.00001, y = 1.00001;
-                setInterval(() => {
-                    socket.emit('now coordinate', [x, y]); // 위도, 경도
-                    x += 0.00010, y += 0.00010;
-                }, 1000);
-                socket.on('warning', (msg) => {
-                    $('#messages').append($('<li>').text(msg));
-                });
+            getLocation = function(callback){
+                navigator.geolocation.getCurrentPosition(function(position){
+                        x = position.coords.latitude, y = position.coords.longitude;
+                        // $('#messages').append($('<li>').text(x));
+                        // $('#messages').append($('<li>').text(y));
+                        callback(x, y);
+                    }, function(error){
+                        console.error(error);
+                    }, {
+                        enableHighAccuracy: false,
+                        maximumAge: 0,
+                        timeout: Infinity
+                    });
+            }
+            
+            if(navigator.geolocation){ // GPS 지원시
+                $(() => {
+                    var socket = io();
+                    var coordinate;
+                    setInterval(() => {
+                        getLocation(function(x,y){
+                            coordinate = [x,y];
+                        });
+                        $('#messages').append($('<li>').text(coordinate[0]));
+                        socket.emit('now coordinate', [coordinate[0], coordinate[1]]); // 위도, 경도
+                    }, 1000);
+                    socket.on('warning', (msg) => {
+                        $('#messages').append($('<li>').text(msg));
+                    });
             });
+            } else {
+                alert('GPS를 켜주세요');
+            }
+            
         </script>
     </body>
 </html>
