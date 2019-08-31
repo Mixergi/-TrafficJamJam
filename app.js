@@ -59,24 +59,13 @@ io.on('connection', (socket) => {
         var now_lat = parseFloat(coordinate[1][0].substring(0, coordinate[1][0].length)), now_lon = parseFloat(coordinate[1][1].substring(0, coordinate[1][1].length)); // 현재 위경도
         console.log(lat, lon);
         console.log(now_lat, now_lon);
-        switch(direction){
-            case 1:
-                break
-            case 2:
-                break
-            case 3:
-                break
-            case 4:
-                break
-            case 5:
-                break
-            case 6:
-                break
-            case 7:
-                break
-            default:
 
-        }
+        var temp = gps.search(direction, lat, lon, now_lat, now_lon);
+
+        var x = temp[0], y = temp[1];
+
+        console.log(x);
+        console.log(y);
 
         io.emit('status', {
             speed: speed,

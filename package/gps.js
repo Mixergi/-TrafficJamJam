@@ -190,16 +190,61 @@ function mlon(m){
 }
 
 function clc_coor(p1, p2, operator='+'){
-    var p1 = parseFloat(p1.substring(0, p1.length-1))
-    var p2 = parseFloat(p2.substring(0, p2.length-1))
+    if(typeof p1 === "string"){
+        var P1 = parseFloat(p1.substring(0, p1.length-1))
+        var P2 = parseFloat(p2.substring(0, p2.length-1))
+    } else {
+        var P1 = p1;
+        var P2 = p2;
+    }
+    
     var sum = 0;
-    if(operator == '+') sum = p1 + p2;
-    else if(operator == '-') sum = p1 - p2;
+    if(operator == '+') sum = P1 + P2;
+    else if(operator == '-') sum = P1 - P2;
     else{
         console.log('error');
         return 100;
     }
     return sum;
+}
+
+STL = function(direction, lat, lon, now_lat, now_lon){
+    var x = [], y = [];
+    switch(direction){
+        case 1:
+            x = [clc_coor(now_lat, lat/4, '-'), clc_coor(now_lat, lat/4, '+')]; // 위도의 극값
+            y = [now_lon, clc_coor(now_lon, lon, '+')]; // 경도의 극값
+            break
+        case 2:
+            x = [now_lat, clc_coor(now_lat, lat/2, '+')];
+            y = [now_lon, clc_coor(now_lon, lon/2, '+')];
+            break
+        case 3:
+            x = [now_lat, clc_coor(now_lat, lat, '+')];
+            y = [clc_coor(now_lon, lon/4, '-'), clc_coor(now_lon, lon/4, '+')]; 
+            break
+        case 4:
+            x = [now_lat, clc_coor(now_lat, lat/2, '+')];
+            y = [clc_coor(now_lon, lon/2, '-'), now_lon];
+            break
+        case 5:
+            x = [clc_coor(now_lat, lat/4, '-'), clc_coor(now_lat, lat/4, '+')];
+            y = [clc_coor(now_lon, lon, '-'), now_lon];
+            break
+        case 6:
+            x = [clc_coor(now_lat, lat/2, '-'), now_lat];
+            y = [clc_coor(now_lon, lon/2, '-'), now_lon];
+            break
+        case 7:
+            x = [clc_coor(now_lat, lat, '-'), now_lat];
+            y = [clc_coor(now_lon, lon/4, '-'), clc_coor(now_lon, lon/4, '+')]; 
+            break
+        default:
+            x = [clc_coor(now_lat, lat/2, '-'), now_lat];
+            y = [now_lon, clc_coor(now_lon, lon/2, '+')];
+    }
+
+    return [x, y];
 }
 
 
@@ -209,5 +254,6 @@ module.exports = {
     calculate_direction: CD,  // 방향
     m_to_lat: mlat,
     m_to_lon: mlon,
-    calculate_coordinate: clc_coor
+    calculate_coordinate: clc_coor,
+    search: STL
 };
