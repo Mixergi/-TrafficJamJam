@@ -8,13 +8,15 @@ const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
 const logger = require('morgan');
+const favicon = require('serve-favicon');
 const io = require('socket.io')(http);
 
 // WEB 세팅
 app.use(logger('dev')); // 로깅처리
 app.set('view engine', 'ejs');  //템플릿 엔진 세팅
 app.set('views', './views');    //ejs 파일이 저장된 디렉토리
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public')); // 정적 파일 처리
+app.use(favicon(__dirname + '/public/image/favicon.ico')); // 파비콘 세팅
 
 // DB 세팅
 const admin = require('firebase-admin');
@@ -40,7 +42,7 @@ app.get('/', (req, res) => {
 });
 
 // 소켓 통신
-var TJJ = require('./TTJ/gps');
+var TJJ = require('./TJJ/gps');
 var coordinate = [[0, 0], [0, 0]]; // [0]은 이전 좌표, [1]은 현재 좌표
 io.on('connection', (socket) => {
     console.log('user connected');
@@ -50,8 +52,12 @@ io.on('connection', (socket) => {
         coordinate[1] = data;
         console.log(coordinate);
 
-        // speed = TJJ.calculate_speed(coordinate[0], coordinate[1]);
-        // console.log(speed, 'km/h');
+        var distance = TJJ.calculate_distance(coordinate[0], coordinate[1]);
+        console.log(speed, 'm move');
+        var speed = TJJ.calculate_speed(coordinate[0], coordinate[1]);
+        console.log(speed, 'km/h');
+        var direction = TJJ.calculate_direction(coordinate[0], coordinate[1]);
+        console.log('direction: ', direction);
 
         io.emit('warning', 'test');
     });

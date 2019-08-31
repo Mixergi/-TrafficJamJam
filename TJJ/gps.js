@@ -183,7 +183,7 @@ CD = function (position1, position2) {
 };
 
 module.exports = {
-    calculate_distance: C_dist,
-    calculate_speed: CS,
-    calculate_direction: CD 
+    calculate_distance: C_dist, // 거리
+    calculate_speed: CS, // 속도
+    calculate_direction: CD  // 방향
 };
