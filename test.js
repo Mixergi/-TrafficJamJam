@@ -1,22 +1,30 @@
-Date.prototype.yyyymmddhhmmss = function() {
-    var month = this.getMonth() + 1;
-    var day = this.getDate();
-    var ymd = [this.getFullYear(),
-               (month>9 ? '' : '0') + month,
-               (day>9 ? '' : '0') + day
-              ].join('');
+// Date.prototype.yyyymmddhhmmss = function() {
+//     var month = this.getMonth() + 1;
+//     var day = this.getDate();
+//     var ymd = [this.getFullYear(),
+//                (month>9 ? '' : '0') + month,
+//                (day>9 ? '' : '0') + day
+//               ].join('');
 
-    var hour = this.getHours();
-    var minute = this.getMinutes();
-    var second = this.getSeconds();
+//     var hour = this.getHours();
+//     var minute = this.getMinutes();
+//     var second = this.getSeconds();
   
-    var hms = [( hour >9 ? '' : '0') + hour,
-               (minute>9 ? '' : '0') + minute,
-               (second>9 ? '' : '0') + second,
-              ].join('');
+//     var hms = [( hour >9 ? '' : '0') + hour,
+//                (minute>9 ? '' : '0') + minute,
+//                (second>9 ? '' : '0') + second,
+//               ].join('');
 
-    return ymd+hms;
-};
+//     return ymd+hms;
+// };
   
-  var date = new Date();
-  console.log(date.yyyymmddhhmmss());
+//   var date = new Date();
+//   console.log(date.yyyymmddhhmmss());
+
+var obj = {
+    a: 1,
+    b: 2,
+    c: 3
+}
+obj['d'] = 4;
+console.log(obj.a);

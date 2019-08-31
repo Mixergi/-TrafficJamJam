@@ -21,7 +21,7 @@ admin.initializeApp({
     databaseURL: "https://trafficjamjam-3e477.firebaseio.com"
 });
 var db = admin.database();
-var ref = db.ref("AllData/GwangJu");
+var ref = db.ref("staticData/GwangJu");
 
 // 데이터 검색
 var static_data;
@@ -88,12 +88,13 @@ io.on('connection', (socket) => {
         var temp = gps.search(direction, lat, lon, now_lat, now_lon);
         var x = temp[0], y = temp[1];
 
+
         for(var i in static_data){
-            if(static_data[i].distance == distance &&
+            if(static_data[i].direction == direction &&
             static_data[i].location.latitude >= x[0] && static_data[i].location.latitude >= x[1] &&
             static_data[i].location.longitude >= y[0] && static_data[i].location.latitude <= y[1]){ // 방향이 같고, 보고 있는 방향에 위치함
-                
-                
+                console.log(static_data[i]);
+                user_list[room_num].set_traffic_light(static_data[i]);
             }
         }
 
