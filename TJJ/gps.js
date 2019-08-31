@@ -107,7 +107,7 @@ CS = function (position1, position2, milisecond = 1000) {
 
     */
 
-    return (calculate_distance(position1, position2) * 3600 / (milisecond / 1000)) / 1000;
+    return (C_dist(position1, position2) * 3600 / (milisecond / 1000)) / 1000;
 };
 
 CD = function (position1, position2) {
