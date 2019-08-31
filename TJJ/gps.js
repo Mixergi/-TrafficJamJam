@@ -140,7 +140,7 @@ CD = function (position1, position2) {
         }
     }
 
-    else if (position1_longitude < position2_longitude) {
+    else if (position1_longitude > position2_longitude) {
         if (vector > 3.8) {
             return 5;
         }
