@@ -112,13 +112,7 @@ io.on('connection', (socket) => {
             }
         }
 
-        io.emit('status', {
-            speed: speed,
-            direction: direction
-        });
-    });
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
+        io.emit('speed', speed);
     });
 });
 
