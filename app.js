@@ -14,7 +14,7 @@ app.use(favicon(__dirname + '/public/image/favicon.ico')); // 파비콘 세팅
 
 // DB 세팅
 const admin = require('firebase-admin');
-const serviceAccount = require('./trafficjamjam-3e477-firebase-adminsdk-xbjf1-6c03c55dec.json');
+const serviceAccount = require('./HeyStop.json');
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
