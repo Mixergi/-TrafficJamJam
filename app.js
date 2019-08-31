@@ -43,14 +43,29 @@ var user = require('./package/user');
 var room_num = 0;
 var room_list = [];
 var user_list = [];
+var check_list = [];
 
 io.on('connection', (socket) => {
 
     room_list.push = [`${room_num}`];
     user_list.push(new user(room_num));
     socket.emit('give_room_num', room_num);
-    socket.join(room_list[room_num++]);
+    socket.join(room_list[room_num]);
 
+    console.log(room_num);
+    
+    check_list.push(setInterval((room_num) => {
+        if(Date.now() - user_list[room_num].last_update >= 60 * 1000){
+            user_list[room_num] = undefined;
+            room_list[room_num] = undefined;
+            
+            console.log('삭제!')
+            clearInterval(check_list[room_num]);
+
+        }
+    }, 70 * 1000, room_num));
+
+room_num++;
 
     console.log('user connected');
     socket.on('now coordinate', (room_num, data) => {
