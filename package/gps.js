@@ -182,8 +182,32 @@ CD = function (position1, position2) {
     }
 };
 
+function mlat(m){
+    return parseInt(m / 1.1) * 0.00001;
+}
+function mlon(m){
+    return parseInt(m / 0.9) * 0.00001;
+}
+
+function clc_coor(p1, p2, operator='+'){
+    var p1 = parseFloat(p1.substring(0, p1.length-1))
+    var p2 = parseFloat(p2.substring(0, p2.length-1))
+    var sum = 0;
+    if(operator == '+') sum = p1 + p2;
+    else if(operator == '-') sum = p1 - p2;
+    else{
+        console.log('error');
+        return 100;
+    }
+    return sum;
+}
+
+
 module.exports = {
     calculate_distance: C_dist, // 거리
     calculate_speed: CS, // 속도
-    calculate_direction: CD  // 방향
+    calculate_direction: CD,  // 방향
+    m_to_lat: mlat,
+    m_to_lon: mlon,
+    calculate_coordinate: clc_coor
 };

@@ -1,9 +1,3 @@
-// function roop () {
-//     console.log("dsad");
-    
-// }
-
-// setInterval(roop, 1000)\
 const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
@@ -61,7 +55,33 @@ io.on('connection', (socket) => {
         var direction = gps.calculate_direction(coordinate[0], coordinate[1])
         console.log(direction);
 
-        io.emit('warning', [String(distance), String(speed), String(direction)].join(', '));
+        var lat = gps.m_to_lat(distance)*10, lon = gps.m_to_lon(distance)*10; // 반경 구하기
+        var now_lat = parseFloat(coordinate[1][0].substring(0, coordinate[1][0].length)), now_lon = parseFloat(coordinate[1][1].substring(0, coordinate[1][1].length)); // 현재 위경도
+        console.log(lat, lon);
+        console.log(now_lat, now_lon);
+        switch(direction){
+            case 1:
+                break
+            case 2:
+                break
+            case 3:
+                break
+            case 4:
+                break
+            case 5:
+                break
+            case 6:
+                break
+            case 7:
+                break
+            default:
+
+        }
+
+        io.emit('status', {
+            speed: speed,
+            direction: direction
+        });
     });
     socket.on('disconnect', () => {
         console.log('user disconnected');
