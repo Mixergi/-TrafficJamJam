@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <link href="/css/bootstrap.css" rel="stylesheet">
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/HUD.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <script src="/js/socket.io.js"></script>
+  <title></title>
+</head>
+
+<body id="bd" style="filter:FlipV();">
+  <strong>
+    <div id="MyactDisplay" class="HUD_act">0</div>
+  </strong>
+  <strong>
+    <div id="MykmDisplay" class="HUD_km">0km/h</div>
+  </strong>
+  <strong>
+    <div id="MynoticeDisplay" class="HUD_notice">Keep</div>
+  </strong>
+
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script>
+    var room_num;
+
+    var traffic_color = 1;
+
+    getLocation = function (callback) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        x = position.coords.latitude, y = position.coords.longitude;
+        callback(x, y);
+      }, function (error) {
+        console.error(error);
+      }, {
+          enableHighAccuracy: false,
+          maximumAge: 0,
+          timeout: Infinity
+        });
+    }
+
+    if ("geolocation" in navigator) { // GPS 지원시
+      $(() => {
+        var socket = io();
+        var coordinate;
+
+        setInterval(() => {
+          getLocation(function (x, y) {
+            coordinate = [x, y];
+          });
+          socket.emit('now coordinate', room_num, [coordinate[0], coordinate[1]]); // 위도, 경도
+        }, 1000);
+
+        socket.on('warning', (msg) => {
+          $('#messages').append($('<li>').text(msg));
+        });
+
+        socket.on('give_room_num', (room_num) => {
+          this.room_num = room_num;
+        });
+
+        socket.on('color', (color) => {
+          this.traffic_color = color;
+
+          if (color == 1) {
+            $('#MyactDisplay').css("color", '#f32f10')
+            $('#MykmDisplay').css("color", '#f32f10')
+            $('#MynoticeDisplay').css("color", '#f32f10')
+          }
+
+          else if (color == 2) {
+            $('#MyactDisplay').css("color", '#fed525')
+            $('#MykmDisplay').css("color", '#fed525')
+            $('#MynoticeDisplay').css("color", '#fed525')
+          }
+
+          else {
+            $('#MyactDisplay').css("color", '#7cfe9c')
+            $('#MykmDisplay').css("color", '#7cfe9c')
+            $('#MynoticeDisplay').css("color", '#7cfe9c')
+          }
+        });
+
+        socket.on('speed', (speed) => {
+          if (speed > 1000) {
+            speed = 0;
+          }
+          $('#MykmDisplay').text(`${speed}km/h`);
+        });
+
+        socket.on('reversal',() =>{
+          $('#bd').css('transform', 'rotate(30deg)')
+        });
+      });
+    } else {
+      alert('GPS를 켜주세요');
+    }
+
+  </script>
+
+</body>
+
+</html>
