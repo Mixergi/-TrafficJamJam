@@ -106,8 +106,8 @@ io.on('connection', (socket) => {
         var temp = gps.search(direction, lat, lon, now_lat, now_lon);
         var x = temp[0], y = temp[1];
         // console.log(direction);
-        console.log(x);
-        console.log(y);
+        // console.log(x);
+        // console.log(y);
         if(user_list[room_num].near_traffic_light == null) {
             console.log('비어있음');
             for(var i in static_data){
@@ -116,7 +116,6 @@ io.on('connection', (socket) => {
                 static_data[i].location.longitude >= x[0] && static_data[i].location.latitude <= x[1]){
                     t = static_data[i];
                     t['key'] = i;
-                    console.log(t);
                     user_list[room_num].set_traffic_light(t);
                 }
             }
