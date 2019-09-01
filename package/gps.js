@@ -229,7 +229,7 @@ STL = function(direction, lat, lon, now_lat, now_lon){
             break;
         case 5:
             x = [clc_coor(now_lon, lon/4, '-'), clc_coor(now_lon, lon/4, '+')];
-            y = [clc_coor(now_lay, lat, '-'), now_lat];
+            y = [clc_coor(now_lat, lat, '-'), now_lat];
             break;
         case 6:
             x = [clc_coor(now_lon, lon/2, '-'), now_lon];
