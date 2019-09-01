@@ -16,7 +16,7 @@
   <title></title>
 </head>
 
-<body id="bd" style="filter:FlipV();">
+<body>
   <strong>
     <div id="MyactDisplay" class="HUD_act">0</div>
   </strong>
@@ -96,7 +96,42 @@
         });
 
         socket.on('reversal', () => {
-          $('#bd').css('transform', 'rotate(180deg)')
+          $('#MyactDisplay').css('transform', 'rotate(180deg)')
+          $('#MykmDisplay').css('transform', 'rotate(180deg)')
+          $('#MynoticeDisplay').css('transform', 'rotate(180deg)')
+        });
+
+        socket.on('trafficLightStatus', (sendobj) => {
+          this.traffic_color = sendobj['status_code'];
+
+          if (this.traffic_color == 1) {
+            $('#MyactDisplay').css("color", '#f32f10')
+            $('#MykmDisplay').css("color", '#f32f10')
+            $('#MynoticeDisplay').css("color", '#f32f10')
+          }
+
+          else if (this.traffic_color == 2) {
+            $('#MyactDisplay').css("color", '#fed525')
+            $('#MykmDisplay').css("color", '#fed525')
+            $('#MynoticeDisplay').css("color", '#fed525')
+          }
+
+          else {
+            $('#MyactDisplay').css("color", '#7cfe9c')
+            $('#MykmDisplay').css("color", '#7cfe9c')
+            $('#MynoticeDisplay').css("color", '#7cfe9c')
+          }
+
+
+          if(sendobj['remaining_time'] == 3){
+
+            $('#MynoticeDisplay').text('break');
+            $('#MyactDisplay').text('3');
+          }
+          else{
+            $('#MynoticeDisplay').text('keep');
+            $('#MyactDisplay').text('10');
+          }
         });
       });
     } else {
