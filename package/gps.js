@@ -183,10 +183,10 @@ CD = function (position1, position2) {
 };
 
 function mlat(m){
-    return parseInt(m / 1.1) * 0.00001;
+    return parseInt(m / 0.9) * 0.00001;
 }
 function mlon(m){
-    return parseInt(m / 0.9) * 0.00001;
+    return parseInt(m / 1.1) * 0.00001;
 }
 
 function clc_coor(p1, p2, operator='+'){
@@ -246,7 +246,10 @@ STL = function(direction, lat, lon, now_lat, now_lon){
 
     return [x, y];
 }
-
+GR = function(location){
+    var coordinates = [convert_to_degree(location[0])+0.00011, convert_to_degree([1])+0.0001];
+    return coordinates;
+}
 
 module.exports = {
     calculate_distance: C_dist, // 거리
@@ -255,5 +258,6 @@ module.exports = {
     m_to_lat: mlat,
     m_to_lon: mlon,
     calculate_coordinate: clc_coor,
-    search: STL
+    search: STL,
+    get_Radius: GR
 };
