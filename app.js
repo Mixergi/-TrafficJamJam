@@ -124,12 +124,14 @@ io.on('connection', (socket) => {
             sendobj = {
                 status_code: status[key].status_code
             }
-            if(sendobj.status_code === 2){
+            if(sendobj.status_code === 1) {
+                sendobj['remainingTime'] = 10;
+            } else if(sendobj.status_code === 2){
                 // sendobj['remainingTime'] = 5+(parseInt(status[key].releasedTime)-parseInt(utils.getdate()))
                 sendobj['remainingTime'] = 3;
             } else {
                 // sendobj['remainingTime'] = 10+(parseInt(status[key].releasedTime)-parseInt(utils.getdate()))
-                sendobj['remainingTime'] = 10;
+                sendobj['remainingTime'] = Math.floor(Math.random()*10)+1;
             }
             io.emit('trafficLightStatus', sendobj);
 
