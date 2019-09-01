@@ -133,6 +133,7 @@ io.on('connection', (socket) => {
                 // sendobj['remainingTime'] = 10+(parseInt(status[key].releasedTime)-parseInt(utils.getdate()))
                 sendobj['remainingTime'] = Math.floor(Math.random()*10)+1;
             }
+            console.log(sendobj);
             io.emit('trafficLightStatus', sendobj);
 
             coor = user_list[room_num].near_traffic_light.location;
