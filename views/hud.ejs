@@ -104,6 +104,8 @@
         socket.on('trafficLightStatus', (sendobj) => {
           this.traffic_color = sendobj['status_code'];
 
+          $('#MyactDisplay').text(sendobj['remaining_time']);
+
           if (this.traffic_color == 1) {
             $('#MyactDisplay').css("color", '#f32f10')
             $('#MykmDisplay').css("color", '#f32f10')
