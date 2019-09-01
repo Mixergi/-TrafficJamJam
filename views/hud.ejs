@@ -95,14 +95,13 @@
           $('#MykmDisplay').text(`${speed}km/h`);
         });
 
-        socket.on('reversal',() =>{
-          $('#bd').css('transform', 'rotate(30deg)')
+        socket.on('reversal', () => {
+          $('#bd').css('transform', 'rotate(180deg)')
         });
       });
     } else {
       alert('GPS를 켜주세요');
     }
-
   </script>
 
 </body>
