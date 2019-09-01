@@ -104,7 +104,7 @@
         socket.on('trafficLightStatus', (sendobj) => {
           this.traffic_color = sendobj['status_code'];
 
-          $('#MyactDisplay').text(sendobj['remaining_time']);
+          $('#MyactDisplay').text(sendobj['remainingTime']);
 
           if (this.traffic_color == 1) {
             $('#MyactDisplay').css("color", '#f32f10')
@@ -128,7 +128,7 @@
           }
 
 
-          if(sendobj['remaining_time'] <= 5) {
+          if(sendobj['remainingTime'] <= 5) {
             $('#MynoticeDisplay').text('break');
           }
         });
