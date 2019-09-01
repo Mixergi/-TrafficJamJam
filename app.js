@@ -54,7 +54,6 @@ app.get('/main', (req, res) => {
 });
 
 app.get('/hud', (req, res) => {
-    console.log(static_data);
     res.render('./hud');
 });
 
@@ -127,11 +126,12 @@ io.on('connection', (socket) => {
                 status_code: status[key].status_code
             }
             if(sendobj.status_code === 2){
-                sendobj['remainingTime'] = 5-(parseInt(status[key].releasedTime)-parseInt(utils.getdate()))
+                // sendobj['remainingTime'] = 5+(parseInt(status[key].releasedTime)-parseInt(utils.getdate()))
+                sendobj['remainingTime'] = 3;
             } else {
-                sendobj['remainingTime'] = 10-(parseInt(status[key].releasedTime)-parseInt(utils.getdate()))
+                // sendobj['remainingTime'] = 10+(parseInt(status[key].releasedTime)-parseInt(utils.getdate()))
+                sendobj['remainingTime'] = 10;
             }
-            console.log(sendobj);
             io.emit('trafficLightStatus', sendobj);
 
             coor = user_list[room_num].near_traffic_light.location;

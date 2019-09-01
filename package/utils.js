@@ -19,6 +19,7 @@ Getdate = function() {
     return ymd+hms;
 };
 
+console.log(parseInt(Getdate()));
 module.exports = {
     getdate: Getdate
 }

@@ -212,42 +212,43 @@ STL = function(direction, lat, lon, now_lat, now_lon){
     var x = [], y = [];
     switch(direction){
         case 1:
-            x = [clc_coor(now_lat, lat/4, '-'), clc_coor(now_lat, lat/4, '+')]; // 위도의 극값
-            y = [now_lon, clc_coor(now_lon, lon, '+')]; // 경도의 극값
-            break
+            x = [clc_coor(now_lon, lon/4, '-'), clc_coor(now_lon, lon/4, '+')]; // 위도의 극값
+            y = [now_lat, clc_coor(now_lat, lat, '+')]; // 경도의 극값
+            break;
         case 2:
-            x = [now_lat, clc_coor(now_lat, lat/2, '+')];
-            y = [now_lon, clc_coor(now_lon, lon/2, '+')];
-            break
+            x = [now_lon, clc_coor(now_lon, lon/2, '+')];
+            y = [now_lat, clc_coor(now_lat, lat/2, '+')];
+            break;
         case 3:
-            x = [now_lat, clc_coor(now_lat, lat, '+')];
-            y = [clc_coor(now_lon, lon/4, '-'), clc_coor(now_lon, lon/4, '+')]; 
-            break
+            x = [now_lon, clc_coor(now_lon, lon, '+')];
+            y = [clc_coor(now_lat, lat/4, '-'), clc_coor(now_lat, lat/4, '+')]; 
+            break;
         case 4:
-            x = [now_lat, clc_coor(now_lat, lat/2, '+')];
-            y = [clc_coor(now_lon, lon/2, '-'), now_lon];
-            break
+            x = [now_lon, clc_coor(now_lon, lon/2, '+')];
+            y = [clc_coor(now_lat, lat/2, '-'), now_lat];
+            break;
         case 5:
-            x = [clc_coor(now_lat, lat/4, '-'), clc_coor(now_lat, lat/4, '+')];
-            y = [clc_coor(now_lon, lon, '-'), now_lon];
-            break
+            x = [clc_coor(now_lon, lon/4, '-'), clc_coor(now_lon, lon/4, '+')];
+            y = [clc_coor(now_lay, lat, '-'), now_lat];
+            break;
         case 6:
-            x = [clc_coor(now_lat, lat/2, '-'), now_lat];
-            y = [clc_coor(now_lon, lon/2, '-'), now_lon];
-            break
+            x = [clc_coor(now_lon, lon/2, '-'), now_lon];
+            y = [clc_coor(now_lat, lat/2, '-'), now_lat];
+            break;
         case 7:
-            x = [clc_coor(now_lat, lat, '-'), now_lat];
-            y = [clc_coor(now_lon, lon/4, '-'), clc_coor(now_lon, lon/4, '+')]; 
-            break
-        default:
-            x = [clc_coor(now_lat, lat/2, '-'), now_lat];
-            y = [now_lon, clc_coor(now_lon, lon/2, '+')];
+            x = [clc_coor(now_lon, lon, '-'), now_lon];
+            y = [clc_coor(now_lat, lat/4, '-'), clc_coor(now_lat, lat/4, '+')]; 
+            break;
+        case 8:
+            x = [clc_coor(now_lon, lon/2, '-'), now_lon];
+            y = [now_lat, clc_coor(now_lat, lat/2, '+')];
+            break;
     }
 
     return [x, y];
 }
 GR = function(location){
-    var coordinates = [convert_to_degree(location[0])+0.00011, convert_to_degree([1])+0.0001];
+    var coordinates = [convert_to_degree(location[0])+0.00011, convert_to_degree(location[1])+0.0001];
     return coordinates;
 }
 

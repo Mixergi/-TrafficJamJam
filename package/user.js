@@ -10,7 +10,7 @@ module.exports = function (room_num) {
     }
     */
 
-    this.coordinate = [['0.00000°', '0.00000°'], ['0.00000°', '0.00000°']];
+    this.coordinate = [['36.614281°', '127.867005°'], ['36.614281°', '127.867005°']];
 
     this.last_update = Date.now();
     this.before_update = Date.now();
