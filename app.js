@@ -21,12 +21,20 @@ admin.initializeApp({
     databaseURL: "https://trafficjamjam-3e477.firebaseio.com"
 });
 var db = admin.database();
-var ref = db.ref("staticData/GwangJu");
+var onceref = db.ref("staticData/GwangJu");
+var onref = db.ref('Status/GwangJu');
 
 // 데이터 검색
 var static_data;
-ref.once("value", function (snapshot) {
+onceref.once("value", function (snapshot) {
     static_data = snapshot.val();
+}, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+    res.send('error');
+});
+var status;
+onref.on("value", function (snapshot) {
+    status = snapshot.val();
 }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
     res.send('error');
@@ -46,12 +54,14 @@ app.get('/main', (req, res) => {
 });
 
 app.get('/hud', (req, res) => {
+    console.log(static_data);
     res.render('./hud');
 });
 
 // 소켓 통신
 var gps = require('./package/gps');
 var user = require('./package/user');
+var utils = require('./package/utils');
 
 var room_num = 0;
 var room_list = [];
@@ -84,31 +94,52 @@ io.on('connection', (socket) => {
         console.log('room_num : ', room_num);
 
         user_list[room_num].update_position([String(data[0]) + '°', String(data[1]) + '°']);
-        console.log(user_list[room_num].coordinate[0], ' ', user_list[room_num].coordinate[1]);
+        console.log(user_list[room_num].coordinate[1]);
 
         var distance = gps.calculate_distance(user_list[room_num].coordinate[0], user_list[room_num].coordinate[1]);
         var speed = parseInt(gps.calculate_speed(user_list[room_num].coordinate[0], user_list[room_num].coordinate[1]));
         var direction = gps.calculate_direction(user_list[room_num].coordinate[0], user_list[room_num].coordinate[1])
-        console.log(direction);
-        console.log(distance);
-        console.log(speed);
-
-        var lat = gps.m_to_lat(distance) * 10, lon = gps.m_to_lon(distance) * 10; // 반경 구하기
+        var lat = gps.m_to_lat(distance*10), lon = gps.m_to_lon(distance*10); // 반경 구하기
+        // console.log(distance, lat, lon);
         var now_lat = parseFloat(user_list[room_num].coordinate[1][0].substring(0, user_list[room_num].coordinate[1][0].length)),
             now_lon = parseFloat(user_list[room_num].coordinate[1][1].substring(0, user_list[room_num].coordinate[1][1].length)); // 현재 위경도
 
         var temp = gps.search(direction, lat, lon, now_lat, now_lon);
         var x = temp[0], y = temp[1];
+        // console.log(direction);
+        console.log(x);
+        console.log(y);
+        if(user_list[room_num].near_traffic_light == null) {
+            console.log('비어있음');
+            for(var i in static_data){
+                if(static_data[i].direction == direction &&
+                static_data[i].location.latitude >= y[0] && static_data[i].location.latitude <= y[1] &&
+                static_data[i].location.longitude >= x[0] && static_data[i].location.latitude <= x[1]){
+                    t = static_data[i];
+                    t['key'] = i;
+                    console.log(t);
+                    user_list[room_num].set_traffic_light(t);
+                }
+            }
+        } else { // 마킹중임!
+            key = user_list[room_num].near_traffic_light.key;
+            sendobj = {
+                status_code: status[key].status_code
+            }
+            if(sendobj.status_code === 2){
+                sendobj['remainingTime'] = 5-(parseInt(status[key].releasedTime)-parseInt(utils.getdate()))
+            } else {
+                sendobj['remainingTime'] = 10-(parseInt(status[key].releasedTime)-parseInt(utils.getdate()))
+            }
+            console.log(sendobj);
+            io.emit('trafficLightStatus', sendobj);
 
-
-        for(var i in static_data){
-            if(static_data[i].direction == direction &&
-            static_data[i].location.latitude >= x[0] && static_data[i].location.latitude >= x[1] &&
-            static_data[i].location.longitude >= y[0] && static_data[i].location.latitude <= y[1]){ // 방향이 같고, 보고 있는 방향에 위치함
-                console.log(static_data[i]);
-                user_list[room_num].set_traffic_light(static_data[i]);
-            } else if(user_list[room_num].near_traffic_light) {
-                
+            coor = user_list[room_num].near_traffic_light.location;
+            coor = gps.get_Radius(coor);
+            if(user_list[room_num].coordinate[1][0] < coor[0][0] || user_list[room_num].coordinate[1][0] > coor[0][1]||
+            user_list[room_num].coordinate[1][1] < coor[1][0] || user_list[room_num].coordinate[1][1] > coor[0][1]){
+                console.log('제거');
+                user_list[room_num].near_traffic_light = null;
             }
         }
 
