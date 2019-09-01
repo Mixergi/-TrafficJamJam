@@ -108,29 +108,26 @@
             $('#MyactDisplay').css("color", '#f32f10')
             $('#MykmDisplay').css("color", '#f32f10')
             $('#MynoticeDisplay').css("color", '#f32f10')
+            $('#MynoticeDisplay').text('break');
           }
 
           else if (this.traffic_color == 2) {
             $('#MyactDisplay').css("color", '#fed525')
             $('#MykmDisplay').css("color", '#fed525')
             $('#MynoticeDisplay').css("color", '#fed525')
+            $('#MynoticeDisplay').text('break');
           }
 
           else {
             $('#MyactDisplay').css("color", '#7cfe9c')
             $('#MykmDisplay').css("color", '#7cfe9c')
             $('#MynoticeDisplay').css("color", '#7cfe9c')
-          }
-
-
-          if(sendobj['remaining_time'] == 3){
-
-            $('#MynoticeDisplay').text('break');
-            $('#MyactDisplay').text('3');
-          }
-          else{
             $('#MynoticeDisplay').text('keep');
-            $('#MyactDisplay').text('10');
+          }
+
+
+          if(sendobj['remaining_time'] <= 5) {
+            $('#MynoticeDisplay').text('break');
           }
         });
       });
